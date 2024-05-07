@@ -467,7 +467,6 @@ export default {
           "自动判断客户端": "auto",
         },
         shortTypes: {
-          "short.yanghuanglin.cn": "http://short.yanghuanglin.cn/short",
           "v1.mk": "https://v1.mk/short",
           "d1.mk": "https://d1.mk/short",
           "dlj.tf": "https://dlj.tf/short",
@@ -893,7 +892,7 @@ export default {
         sourceSubUrl: "",
         clientType: "",
         customBackend: this.getUrlParam() == "" ? defaultBackend : this.getUrlParam(),
-        shortType: shortUrlBackend,
+        shortType: "https://v1.mk/short",
         remoteConfig: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Full_NoAuto.ini",
         excludeRemarks: "",
         includeRemarks: "",
