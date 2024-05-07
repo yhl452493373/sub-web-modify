@@ -8,11 +8,11 @@
 ```shell
 git clone https://github.com/yhl452493373/sub-web-modify.git
 cd sub-web-modify
-docker build -t sub-web-modify:latest .
+docker build -t youshandefeiyang/sub-web-modify:latest .
 ```
 运行：
 ```shell
-docker run -d --restart unless-stopped --privileged=true -p 25550:80 --name sub-web-modify sub-web-modify
+docker run -d --restart unless-stopped --privileged=true -p 25550:80 --name sub-web-modify youshandefeiyang/sub-web-modify
 ```
 访问地址举例:
 ```
