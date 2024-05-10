@@ -3,7 +3,7 @@
 ## 效果预览：
 ![avatar](https://raw.githubusercontent.com/youshandefeiyang/webcdn/main/sub-web-modify.GIF)
 ### 使用方法：
-建议使用Docker一键部署:
+#### Docker构建、部署:
 构建镜像：
 ```shell
 git clone https://github.com/yhl452493373/sub-web-modify.git
@@ -13,6 +13,11 @@ docker build -t youshandefeiyang/sub-web-modify:latest .
 运行：
 ```shell
 docker run -d --restart unless-stopped --privileged=true -p 25550:80 --name sub-web-modify youshandefeiyang/sub-web-modify
+```
+#### Docker Compose一键启动
+先在docker-compose.yml中，将端口改为自己需要的端口。默认情况下为25550，然后执行下面命令
+```shell
+sudo docker-compose up -d
 ```
 访问地址举例:
 ```

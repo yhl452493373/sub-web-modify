@@ -427,6 +427,8 @@ const remoteConfigSample = process.env.VUE_APP_SUBCONVERTER_REMOTE_CONFIG
 const scriptConfigSample = process.env.VUE_APP_SCRIPT_CONFIG
 const filterConfigSample = process.env.VUE_APP_FILTER_CONFIG
 const defaultBackend = process.env.VUE_APP_SUBCONVERTER_DEFAULT_BACKEND
+const defaultBackendName = process.env.VUE_APP_SUBCONVERTER_DEFAULT_BACKEND_NAME
+const defaultBackendVH = process.env.VUE_APP_SUBCONVERTER_DEFAULT_BACKEND_VH
 const shortUrlBackend = process.env.VUE_APP_MYURLS_DEFAULT_BACKEND + '/short'
 const configUploadBackend = process.env.VUE_APP_CONFIG_UPLOAD_BACKEND + '/sub.php'
 const basicVideo = process.env.VUE_APP_BASIC_VIDEO
@@ -437,7 +439,7 @@ const bzlink = process.env.VUE_APP_BILIBILI_LINK
 const downld = 'http://' + window.location.host + '/download.html'
 export default {
   data() {
-    return {
+    let defaultData = {
       backendVersion: "",
       centerDialogVisible: false,
       activeName: 'first',
@@ -474,7 +476,6 @@ export default {
           "sub.cm": "https://sub.cm/short",
         },
         customBackend: {
-          "自用后端": "http://sub.yanghuanglin.cn",
           "肥羊增强型后端【vless reality+hy1+hy2】": "https://url.v1.mk",
           "肥羊备用后端【vless reality+hy1+hy2】": "https://sub.d1.mk",
           "つつ-多地防失联【负载均衡+国内优化】": "https://api.tsutsu.one",
@@ -941,6 +942,22 @@ export default {
       scriptConfig: scriptConfigSample,
       sampleConfig: remoteConfigSample
     };
+    let exist = false;
+    for (let backendKey in defaultData.options.customBackend) {
+      if (defaultData.options.customBackend[backendKey] === defaultBackend) {
+        exist = true;
+        break;
+      }
+    }
+    if (!exist) {
+      let newBackendOptions = {};
+      newBackendOptions[defaultBackendName] = defaultBackend;
+      for (let backendKey in defaultData.options.customBackend) {
+        newBackendOptions[backendKey] = defaultData.options.customBackend[backendKey];
+      }
+      defaultData.options.customBackend = newBackendOptions
+    }
+    return defaultData;
   },
   created() {
     document.title = "在线订阅转换工具";
@@ -1395,13 +1412,15 @@ export default {
           .then(res => {
             this.backendVersion = res.data.replace(/backend\n$/gm, "");
             this.backendVersion = this.backendVersion.replace("subconverter", "SubConverter");
+            //是否为肥羊后端
             let a = this.form.customBackend.indexOf("url.v1.mk") !== -1 || this.form.customBackend.indexOf("sub.d1.mk") !== -1;
-            let b = this.form.customBackend.indexOf("127.0.0.1") !== -1;
-            let c = this.form.customBackend.indexOf('sub.yanghuanglin.cn') !== -1;
+            //是否为默认后端
+            let b = this.form.customBackend.indexOf(defaultBackend) !== -1;
+            //默认后端是否支持vless/hysteria订阅转换
+            let c = defaultBackendVH === "true" ? "支持" : "不支持";
             a ?
-                this.$message.success(`${this.backendVersion}` + "肥羊负载均衡增强版后端，已屏蔽免费节点池（会返回403），额外支持vless reality+hysteria+hysteria2订阅转换") : b ?
-                    this.$message.success(`${this.backendVersion}` + "本地局域网自建版后端，自行确认是否支持vless/hysteria订阅转换") : c ?
-                        this.$message.success(`${this.backendVersion}` + "自建版后端，自行确认是否支持vless/hysteria订阅转换") : this.$message.success(`${this.backendVersion}` + "官方原版后端不支持vless/hysteria订阅转换");
+                this.$message.success(`${this.backendVersion}肥羊负载均衡增强版后端，已屏蔽免费节点池（会返回403），额外支持vless reality+hysteria+hysteria2订阅转换`) : b ?
+                    this.$message.success(`${this.backendVersion}${defaultBackendName}，${c}vless/hysteria订阅转换`) : this.$message.success(`${this.backendVersion}官方原版后端不支持vless/hysteria订阅转换`);
           });
     }
   }

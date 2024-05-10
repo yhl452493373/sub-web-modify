@@ -1,0 +1,10 @@
+version: "3"
+services:
+  sub-web-modify:
+    build:
+      context: .
+    image: sub-web-modify
+    container_name: sub-web-modify
+    restart: unless-stopped
+    ports:
+      - "25550:80"
