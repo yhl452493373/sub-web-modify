@@ -8,7 +8,7 @@
 ```shell
 git clone https://github.com/yhl452493373/sub-web-modify.git
 cd sub-web-modify
-docker build -t youshandefeiyang/sub-web-modify:latest .
+docker build -t sub-web-modify:latest .
 ```
 运行：
 ```shell
